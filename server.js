@@ -30,7 +30,7 @@ const Products = require("./routes/products");
 app.use("/auth", Auth);
 
 // Protected Routes
-app.use(protectedRoutes);
+// app.use(protectedRoutes);
 app.use("/products", Products);
 
 // Error handling middleware

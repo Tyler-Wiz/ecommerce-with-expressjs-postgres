@@ -9,6 +9,14 @@ const { PG } = require("../config");
       password        TEXT,
       name            VARCHAR(50)
     );`,
+    `CREATE TABLE IF NOT EXISTS products (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    description TEXT,
+    price DECIMAL(10, 2) NOT NULL,
+    category VARCHAR(100),
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    );`,
   ];
 
   try {
