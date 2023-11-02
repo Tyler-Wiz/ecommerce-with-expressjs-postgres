@@ -2,10 +2,10 @@ const db = require("../db/index");
 
 class UserModel {
   // Create new user
-  async create(email, password, firstName, lastName) {
+  async create(email, password, name) {
     try {
-      const statement = `INSERT INTO users(email, password, firstName, lastName) VALUES ($1, $2, $3, $4) RETURNING *`;
-      const values = [email, password, firstName, lastName];
+      const statement = `INSERT INTO users(email, password, name) VALUES ($1, $2, $3) RETURNING *`;
+      const values = [email, password, name];
       const result = await db.query(statement, values);
       if (result.rows?.length) {
         return result.rows[0];
