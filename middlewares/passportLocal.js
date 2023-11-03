@@ -9,8 +9,15 @@ passport.serializeUser((user, done) => {
 });
 
 // Set method to deserialize data stored in cookie and attach to req.user
-passport.deserializeUser((id, done) => {
-  done(null, { id });
+passport.deserializeUser(async (id, done) => {
+  try {
+    const user = await UserModel.findUnique(id);
+    console.log(user);
+    if (!user) done(null, false);
+    done(null, user);
+  } catch (error) {
+    done(error, null);
+  }
 });
 
 passport.use(

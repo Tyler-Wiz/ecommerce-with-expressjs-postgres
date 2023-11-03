@@ -16,6 +16,10 @@ app.use(
     secret: "secret",
     resave: true,
     saveUninitialized: true,
+    cookie: {
+      secure: false,
+      maxAge: 24 * 60 * 60 * 1000,
+    },
   })
 );
 app.use(passport.initialize());
@@ -30,11 +34,11 @@ const Products = require("./routes/products");
 app.use("/auth", Auth);
 
 // Protected Routes
-// app.use(protectedRoutes);
+app.use(protectedRoutes);
 app.use("/products", Products);
 
 // Error handling middleware
-app.use(errorHandler);
+// app.use(errorHandler);
 
 // ------------------ END ROUTE IMPORTS -------------------------
 
