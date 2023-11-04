@@ -9,6 +9,7 @@ const { protectedRoutes } = require("./middlewares/protectedRoutes");
 require("./middlewares/passportLocal");
 
 // ----------------------------- START MIDDLEWARES -----------------------------
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(
@@ -24,21 +25,24 @@ app.use(
 );
 app.use(passport.initialize());
 app.use(passport.session());
+
 // ----------------------------- END MIDDLEWARES -----------------------------
 
 // ------------------ START ROUTE IMPORTS -------------------------
 const Auth = require("./routes/auth");
 const Products = require("./routes/products");
+const Users = require("./routes/users");
 
 // Routes
 app.use("/auth", Auth);
+app.use("/users", Users);
 
 // Protected Routes
-app.use(protectedRoutes);
+// app.use(protectedRoutes);
 app.use("/products", Products);
 
 // Error handling middleware
-// app.use(errorHandler);
+app.use(errorHandler);
 
 // ------------------ END ROUTE IMPORTS -------------------------
 

@@ -4,7 +4,7 @@ class ProductModel {
   async findMany() {
     try {
       // Generate SQL statement
-      const statement = `SELECT * FROM products`;
+      const statement = `SELECT * FROM products ORDER BY price DESC`;
       const values = [];
       // Send SQL Statement to Database and Await Response
       const result = await db.query(statement, values);

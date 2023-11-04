@@ -10,7 +10,7 @@ const UserModel = require("../models/users");
 const { passwordHash } = require("../utils/bcrypt");
 
 router.post("/register", async (req, res, next) => {
-  const { email, password, name } = req.body;
+  const { email, password, username } = req.body;
   try {
     // check input
     if (!email) throw createError(404, "Email is required");
@@ -21,7 +21,7 @@ router.post("/register", async (req, res, next) => {
     // Hash Password
     const hashedPassword = await passwordHash(password, 10);
     // Create user in Database
-    const response = await UserModel.create(email, hashedPassword, name);
+    const response = await UserModel.create(email, hashedPassword, username);
     // Convert response to JWT
     const token = await genAuthToken(response);
     //Send response to client
