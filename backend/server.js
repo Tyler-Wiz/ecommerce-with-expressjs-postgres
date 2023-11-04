@@ -1,4 +1,5 @@
 const express = require("express");
+const cors = require("cors");
 const app = express();
 const bodyParser = require("body-parser");
 const session = require("express-session");
@@ -9,7 +10,12 @@ const { protectedRoutes } = require("./middlewares/protectedRoutes");
 require("./middlewares/passportLocal");
 
 // ----------------------------- START MIDDLEWARES -----------------------------
-
+app.use(
+  cors({
+    origin: "http://localhost:3000/",
+    credentials: true,
+  })
+);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(
@@ -38,7 +44,6 @@ app.use("/auth", Auth);
 app.use("/users", Users);
 
 // Protected Routes
-// app.use(protectedRoutes);
 app.use("/products", Products);
 
 // Error handling middleware

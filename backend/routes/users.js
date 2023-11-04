@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const createError = require("http-errors");
 const UserModel = require("../models/users");
+const getUserToken = require("../utils/genUserToken");
 
 router.get("", async (req, res, next) => {
   try {
@@ -31,7 +32,8 @@ router.put("/:id", async (req, res, next) => {
     if (user === null) throw createError(404, "User Doesn't Exist");
     await UserModel.updateOne(data);
     const updatedUser = await UserModel.findUnique(id);
-    res.status(200).send(updatedUser);
+    const token = await getUserToken(updatedUser);
+    res.status(200).send(token);
   } catch (err) {
     next(err);
   }

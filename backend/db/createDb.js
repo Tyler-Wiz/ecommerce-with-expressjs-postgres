@@ -10,7 +10,6 @@ const { PG } = require("../config");
     password         VARCHAR(255) NOT NULL,
     first_name       VARCHAR(50),
     last_name        VARCHAR(50),
-    date_of_birth    DATE,
     address          VARCHAR(255),
     created_at       TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     );`,
