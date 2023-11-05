@@ -17,11 +17,11 @@ class ProductModel {
       throw new Error(err);
     }
   }
-  async findUnique(id) {
+  async findUnique(product_id) {
     try {
       // Generate SQL statement
-      const statement = `SELECT * FROM products WHERE id = $1`;
-      const values = [id];
+      const statement = `SELECT * FROM products WHERE product_id = $1`;
+      const values = [product_id];
       // Await Response from Database
       const result = await db.query(statement, values);
       // Return the first row or rows that matches

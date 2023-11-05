@@ -36,11 +36,11 @@ class UserModel {
       throw new Error(err);
     }
   }
-  async findUnique(id) {
+  async findUnique(user_id) {
     try {
       // Generate SQL statement
-      const statement = `SELECT * FROM users WHERE id = $1`;
-      const values = [id];
+      const statement = `SELECT * FROM users WHERE user_id = $1`;
+      const values = [user_id];
       // Await Response from Database
       const result = await db.query(statement, values);
       if (result.rows?.length) {
@@ -71,9 +71,9 @@ class UserModel {
   async updateOne(data) {
     try {
       // Generate SQL statement
-      const statement = `UPDATE users SET username = $2, first_name = $3, last_name = $4, address= $5 WHERE id = $1`;
+      const statement = `UPDATE users SET username = $2, first_name = $3, last_name = $4, address= $5 WHERE user_id = $1`;
       const values = [
-        data.id,
+        data.user_id,
         data.username,
         data.first_name,
         data.last_name,

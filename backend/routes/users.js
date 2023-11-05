@@ -14,9 +14,9 @@ router.get("", async (req, res, next) => {
 });
 
 router.get("/:id", async (req, res, next) => {
-  const id = req.params.id;
+  const user_id = req.params.id;
   try {
-    const user = await UserModel.findUnique(id);
+    const user = await UserModel.findUnique(user_id);
     if (user === null) throw createError(404, "User Doesn't Exist");
     res.status(200).send(user);
   } catch (err) {
@@ -25,13 +25,13 @@ router.get("/:id", async (req, res, next) => {
 });
 
 router.put("/:id", async (req, res, next) => {
-  const id = req.params.id;
+  const user_id = req.params.id;
   const data = req.body;
   try {
-    const user = await UserModel.findUnique(id);
+    const user = await UserModel.findUnique(user_id);
     if (user === null) throw createError(404, "User Doesn't Exist");
     await UserModel.updateOne(data);
-    const updatedUser = await UserModel.findUnique(id);
+    const updatedUser = await UserModel.findUnique(user_id);
     const token = await getUserToken(updatedUser);
     res.status(200).send(token);
   } catch (err) {
