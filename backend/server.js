@@ -4,7 +4,7 @@ const app = express();
 const bodyParser = require("body-parser");
 const session = require("express-session");
 const passport = require("passport");
-const { PORT } = require("./config");
+const { PORT, DB_CONNECT } = require("./config");
 const { errorHandler } = require("./middlewares/errorHandler");
 const { protectedRoutes } = require("./middlewares/protectedRoutes");
 const genFunc = require("connect-pg-simple");
@@ -12,16 +12,17 @@ require("./middlewares/passportLocal");
 
 const PostgresqlStore = genFunc(session);
 const sessionStore = new PostgresqlStore({
-  conString: "postgres://postgres:123456@localhost:5432/api",
+  conString: DB_CONNECT,
 });
 
 // ----------------------------- START MIDDLEWARES -----------------------------
-app.use(
-  cors({
-    origin: "http://localhost:3000/",
-    credentials: true,
-  })
-);
+const corsOptions = {
+  origin: "http://localhost:3000",
+  credentials: true, //access-control-allow-credentials:true
+  optionSuccessStatus: 200,
+};
+
+app.use(cors(corsOptions));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(
@@ -30,15 +31,17 @@ app.use(
     resave: true,
     saveUninitialized: true,
     cookie: {
+      httponly: false,
       secure: false,
-      maxAge: 24 * 60 * 60 * 1000,
+      sameSite: "none",
+      expires: 7 * 24 * 3600 * 1000,
     },
     store: sessionStore,
   })
 );
 app.use(passport.initialize());
 app.use(passport.session());
-
+// -–-
 // ----------------------------- END MIDDLEWARES -----------------------------
 
 // ------------------ START ROUTE IMPORTS -------------------------

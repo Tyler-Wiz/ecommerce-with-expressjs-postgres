@@ -11,7 +11,7 @@ const { PG } = require("../config");
     first_name       VARCHAR(50),
     last_name        VARCHAR(50),
     address          VARCHAR(255),
-    created_at       TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    created_at       DATE DEFAULT CURRENT_TIMESTAMP
     );`,
     `CREATE TABLE IF NOT EXISTS products (
       product_id       SERIAL PRIMARY KEY,
@@ -19,18 +19,23 @@ const { PG } = require("../config");
       description      TEXT,
       price            DECIMAL(10, 2)   NOT NULL,
       category         VARCHAR(100),
-      updated_at       TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      updated_at       DATE DEFAULT CURRENT_TIMESTAMP
     );`,
     `CREATE TABLE IF NOT EXISTS cart (
     cart_id         SERIAL PRIMARY KEY,
     user_id         INTEGER REFERENCES users(user_id),
-    created_at      TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    created_at      DATE DEFAULT CURRENT_TIMESTAMP
     );`,
     `CREATE TABLE IF NOT EXISTS cart_items (
     cart_item_id    SERIAL PRIMARY KEY,
     cart_id         INTEGER REFERENCES cart(cart_id),
     product_id      INTEGER REFERENCES products(product_id),
     quantity        INTEGER DEFAULT 1
+    );`,
+    `CREATE TABLE IF NOT EXISTS session (
+    sid             VARCHAR(255) PRIMARY KEY,
+    sess            JSON ,
+    expire          DATE DEFAULT CURRENT_TIMESTAMP
     );`,
   ];
 

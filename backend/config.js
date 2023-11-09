@@ -8,4 +8,5 @@ module.exports = {
     DBPORT: process.env.DB_PORT,
   },
   SESSION_SECRET: process.env.SESSION_SECRET,
+  DB_CONNECT: process.env.DB_CONNECT,
 };
