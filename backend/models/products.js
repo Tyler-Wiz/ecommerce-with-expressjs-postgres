@@ -33,6 +33,22 @@ class ProductModel {
       throw new Error(err);
     }
   }
+  async addProduct(data) {
+    try {
+      //Generate SQL statement
+      const statement = `INSERT INTO products(name, description, price, category) VALUES($1, $2, $3, $4) RETURNING*`;
+      const values = [data.name, data.description, data.price, data.category];
+      // Await Response from Database
+      const result = await db.query(statement, values);
+      // Return the first row or rows that matches
+      if (result.rows?.length) {
+        return result.rows;
+      }
+      return [];
+    } catch (err) {
+      throw new Error(err);
+    }
+  }
 }
 
 module.exports = new ProductModel();

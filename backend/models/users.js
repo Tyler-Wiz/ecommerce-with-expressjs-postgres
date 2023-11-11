@@ -19,6 +19,25 @@ class UserModel {
       throw new Error(error);
     }
   }
+
+  // Create New Admin user
+  async createAdmin(email, password, username, is_admin) {
+    try {
+      // Generate SQL statement
+      const statement = `INSERT INTO users(email, password, username, is_admin) VALUES ($1, $2, $3, $4) RETURNING *`;
+      const values = [email, password, username, is_admin];
+      // Send SQL Statement to Database and Await Response
+      const result = await db.query(statement, values);
+      // Check and return new user added
+      if (result.rows?.length) {
+        // Return the first row that matches
+        return result.rows[0];
+      }
+      return null;
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
   // Find user by Email
   async findOneByEmail(email) {
     try {
@@ -71,10 +90,9 @@ class UserModel {
   async updateOne(data) {
     try {
       // Generate SQL statement
-      const statement = `UPDATE users SET username = $2, first_name = $3, last_name = $4, address= $5 WHERE user_id = $1`;
+      const statement = `UPDATE users SET first_name = $2, last_name = $3, address= $4 WHERE user_id = $1`;
       const values = [
         data.user_id,
-        data.username,
         data.first_name,
         data.last_name,
         data.address,

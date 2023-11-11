@@ -37,6 +37,11 @@ const { PG } = require("../config");
     sess            JSON ,
     expire          DATE DEFAULT CURRENT_TIMESTAMP
     );`,
+    `CREATE TABLE IF NOT EXISTS orders (
+     order_id    SERIAL PRIMARY KEY,
+     cart_id     INTEGER REFERENCES cart(cart_id),
+     created_at      DATE DEFAULT CURRENT_TIMESTAMP
+    );`,
   ];
 
   try {

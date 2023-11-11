@@ -3,6 +3,7 @@ const router = express.Router();
 const createError = require("http-errors");
 const CartItemModel = require("../models/cartItems");
 const CartServiceModel = require("../services/cartService");
+const orderModel = require("../models/orders");
 
 router.post("", async (req, res, next) => {
   try {
@@ -41,7 +42,11 @@ router.get("/items", async (req, res, next) => {
     const cart = await CartServiceModel.createCart(user);
     //Retrieve all Items in User Cart
     const cartItems = await CartItemModel.loadCartItems(cart.cart_id);
-    res.send(cartItems);
+    if (cartItems === null) {
+      res.send("no Items in cart");
+    } else {
+      res.send(cartItems);
+    }
   } catch (err) {
     next(err);
   }
@@ -53,6 +58,21 @@ router.get("/items/:id", async (req, res, next) => {
     //Retrieve all Single Item in User Cart
     const cartItem = await CartItemModel.findUniqueItem(cart_item_id);
     res.send(cartItem);
+  } catch (err) {
+    next(err);
+  }
+});
+
+router.post("/:id/checkout", async (req, res, next) => {
+  const user = req.user;
+  try {
+    // Get user cart by ID from session
+    const cart = await CartServiceModel.createCart(user);
+    //Retrieve all Items in User Cart
+    const cartItems = await CartItemModel.loadCartItems(cart.cart_id);
+    if (!cartItems) throw createError(400, "Your cart is empty");
+    const order = await orderModel.create(cart.cart_id);
+    res.status(201).send(order);
   } catch (err) {
     next(err);
   }

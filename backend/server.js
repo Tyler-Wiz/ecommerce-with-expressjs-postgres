@@ -6,7 +6,10 @@ const session = require("express-session");
 const passport = require("passport");
 const { PORT, DB_CONNECT } = require("./config");
 const { errorHandler } = require("./middlewares/errorHandler");
-const { protectedRoutes } = require("./middlewares/protectedRoutes");
+const {
+  protectedRoutes,
+  protectedAdminRoutes,
+} = require("./middlewares/protectedRoutes");
 const genFunc = require("connect-pg-simple");
 require("./middlewares/passportLocal");
 
@@ -17,7 +20,7 @@ const sessionStore = new PostgresqlStore({
 
 // ----------------------------- START MIDDLEWARES -----------------------------
 const corsOptions = {
-  origin: "http://localhost:3000",
+  origin: "https://ecommerce-client-production.up.railway.app",
   credentials: true, //access-control-allow-credentials:true
   optionSuccessStatus: 200,
 };
@@ -49,15 +52,22 @@ const Auth = require("./routes/auth");
 const Products = require("./routes/products");
 const Users = require("./routes/users");
 const Cart = require("./routes/cart");
+const orders = require("./routes/orders");
+const addProduct = require("./routes/addproducts");
 
 // Routes
 app.use("/auth", Auth);
 
-// Protected Routes
+// Protected Routes User Routes
 app.use(protectedRoutes);
 app.use("/products", Products);
 app.use("/cart", Cart);
 app.use("/users", Users);
+app.use("/orders", orders);
+
+// Protected Admin Routes
+app.use(protectedAdminRoutes);
+app.use("/addproducts", addProduct);
 
 // Error handling middleware
 app.use(errorHandler);

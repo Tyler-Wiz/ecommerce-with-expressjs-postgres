@@ -48,7 +48,7 @@ class CartItemModel {
   }
   async loadCartItems(cart_id) {
     try {
-      const statement = `SELECT ci.cart_item_id, p.name, p.price, ci.quantity, p.product_id
+      const statement = `SELECT ci.cart_item_id, p.name, p.price, p.description, p.category, ci.quantity
                       FROM cart_items ci
                       JOIN products p ON ci.product_id = p.product_id
                       WHERE ci.cart_id = $1;`;
@@ -57,7 +57,7 @@ class CartItemModel {
       if (result.rows?.length) {
         return result.rows;
       }
-      return [];
+      return null;
     } catch (err) {
       throw new Error(err);
     }

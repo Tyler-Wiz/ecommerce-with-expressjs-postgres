@@ -5,6 +5,7 @@ const UserModel = require("../models/users");
 const getUserToken = require("../utils/genUserToken");
 
 router.get("", async (req, res, next) => {
+  const user = req.user;
   try {
     const users = await UserModel.findMany();
     res.status(200).send(users);
