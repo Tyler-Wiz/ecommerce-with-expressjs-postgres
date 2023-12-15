@@ -4,7 +4,6 @@ const app = express();
 const bodyParser = require("body-parser");
 const session = require("express-session");
 const passport = require("passport");
-const { PORT, DB_CONNECT } = require("./config");
 const { errorHandler } = require("./middlewares/errorHandler");
 const {
   protectedRoutes,
@@ -15,7 +14,7 @@ require("./middlewares/passportLocal");
 
 const PostgresqlStore = genFunc(session);
 const sessionStore = new PostgresqlStore({
-  conString: DB_CONNECT,
+  conString: process.env.DB_CONNECT,
 });
 
 // ----------------------------- START MIDDLEWARES -----------------------------
@@ -44,7 +43,7 @@ app.use(
 );
 app.use(passport.initialize());
 app.use(passport.session());
-// -–-
+// -–- ó
 // ----------------------------- END MIDDLEWARES -----------------------------
 
 // ------------------ START ROUTE IMPORTS -------------------------
@@ -53,7 +52,6 @@ const Products = require("./routes/products");
 const Users = require("./routes/users");
 const Cart = require("./routes/cart");
 const orders = require("./routes/orders");
-const addProduct = require("./routes/addproducts");
 
 // Routes
 app.use("/auth", Auth);
@@ -66,14 +64,14 @@ app.use("/users", Users);
 app.use("/orders", orders);
 
 // Protected Admin Routes
-app.use(protectedAdminRoutes);
-app.use("/addproducts", addProduct);
+// app.use(protectedAdminRoutes);
 
 // Error handling middleware
 app.use(errorHandler);
 
 // ------------------ END ROUTE IMPORTS -------------------------
 
+const PORT = process.env.PORT;
 app.listen(PORT, () => {
   console.log(`listening at ${PORT}`);
 });

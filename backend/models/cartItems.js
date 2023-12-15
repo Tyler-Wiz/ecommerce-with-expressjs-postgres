@@ -1,4 +1,4 @@
-const db = require("../db/index");
+const db = require("./index");
 
 class CartItemModel {
   async checkIfItemExist(product_id, cart_id) {

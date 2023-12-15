@@ -1,4 +1,4 @@
-const db = require("../db/index");
+const db = require("./index");
 
 class ProductModel {
   async findMany() {
@@ -45,6 +45,28 @@ class ProductModel {
         return result.rows;
       }
       return [];
+    } catch (err) {
+      throw new Error(err);
+    }
+  }
+
+  async addMultipleProducts(data) {
+    try {
+      const statement = `INSERT INTO products(name, description, features, price, keywords, url, category, subcategory) VALUES($1,$2,$3,$4,$5,$6,$7,$8) RETURNING*`;
+      data.forEach(async (record) => {
+        const values = [
+          record.name,
+          record.description,
+          record.features,
+          record.price,
+          record.keywords,
+          record.url,
+          record.category,
+          record.subcategory,
+        ];
+        await db.query(statement, values);
+      });
+      return "Upload Successful";
     } catch (err) {
       throw new Error(err);
     }

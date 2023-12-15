@@ -1,12 +1,7 @@
 const Pool = require("pg").Pool;
-const { PG } = require("../config");
 
 const pool = new Pool({
-  user: PG.DBUSER,
-  host: PG.DBHOST,
-  database: PG.DBDATABASE,
-  password: PG.DBPASSWORD,
-  port: PG.DBPORT,
+  connectionString: process.env.DB_CONNECT,
 });
 
 const query = (text, params, callback) => {

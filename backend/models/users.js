@@ -1,4 +1,4 @@
-const db = require("../db/index");
+const db = require("./index");
 
 class UserModel {
   // Create new user
@@ -87,20 +87,28 @@ class UserModel {
       throw new Error(err);
     }
   }
-  async updateOne(data) {
+  async updateOne(user_id, first_name, last_name, address) {
     try {
       // Generate SQL statement
       const statement = `UPDATE users SET first_name = $2, last_name = $3, address= $4 WHERE user_id = $1`;
-      const values = [
-        data.user_id,
-        data.first_name,
-        data.last_name,
-        data.address,
-      ];
+      const values = [user_id, first_name, last_name, address];
       const result = await db.query(statement, values);
       if (result.rows?.length) {
         // Return the first row that matches
         return result.rows[0];
+      }
+      return null;
+    } catch (err) {
+      throw new Error(err);
+    }
+  }
+  async deleteById(user_id) {
+    try {
+      const statement = `DELETE FROM users WHERE user_id = $1`;
+      const values = [user_id];
+      const result = await db.query(statement, values);
+      if (result) {
+        return true;
       }
       return null;
     } catch (err) {

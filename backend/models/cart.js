@@ -1,4 +1,4 @@
-const db = require("../db/index");
+const db = require("./index");
 
 class CartModel {
   async create(user_id) {
